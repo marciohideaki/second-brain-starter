@@ -152,7 +152,7 @@ Three commands total:
 
 ```bash
 # 1. Download the repo to somewhere you can write to (no sudo needed)
-git clone https://github.com/<YOUR-GITHUB>/second-brain-starter.git ~/second-brain
+git clone https://github.com/marciohideaki/second-brain-starter.git ~/second-brain
 
 # 2. Go into the folder
 cd ~/second-brain
@@ -475,7 +475,7 @@ Tudo em markdown no seu disco. Você pode abrir com Obsidian, VS Code, ou qualqu
 Três comandos:
 
 ```bash
-git clone https://github.com/<SEU-USUARIO>/second-brain-starter.git ~/second-brain
+git clone https://github.com/marciohideaki/second-brain-starter.git ~/second-brain
 cd ~/second-brain
 ./install.sh
 ```
