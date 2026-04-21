@@ -1,0 +1,9 @@
+---
+description: Second Brain vault — always active. The user's persistent AI-powered knowledge base.
+alwaysApply: true
+---
+
+# Second Brain (starter)
+
+This workspace connects to a second-brain vault. Treat every session as a continuation of the previous one: always read `{VAULT}/_memory/current-state.md` before answering, and honor the vault's conventions below.
+
