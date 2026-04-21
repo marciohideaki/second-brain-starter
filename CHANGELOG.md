@@ -24,8 +24,7 @@ Initial public release.
 - **Autoresearch loop** (`/skill-improve`): three-phase systematic improvement pipeline for any skill — human-in-the-loop setup with binary evals, bounded autonomous mutation loop, before/after debrief with applied patch.
 - **LLM Wiki pattern** (`/ingest` + `/wiki-build`): single-source-at-a-time ingestion with user approval before persistence, then compilation into cross-linked wiki pages with contradictions flagging.
 - **Visual assets**: 6 diagrams (banner, flow-overview, architecture, ingestion-flow, session-continuity, skills-map) and 4 terminal screenshots (init-wizard, daily-briefing, wiki-build, end-session).
-- **Screenshot demo scripts** (`docs/assets/screenshots/demo/`): 12 bash scripts that reproduce each skill's output with ANSI colors — regenerate screenshots anytime.
-- **Test suite** (`tests/`): shell syntax validation, directory structure check, frontmatter validation, install smoke test, cursor-adapter smoke test. Runnable via `bash tests/run-all.sh`.
+- **Test suite** (`tests/`): shell syntax validation, directory structure check, frontmatter validation, install smoke test, cursor-adapter smoke test, proprietary-term scanner. Runnable via `bash tests/run-all.sh`.
 - **CI pipeline** (`.github/workflows/ci.yml`): ShellCheck on every `.sh`, plus the full test suite on push and pull request.
 - **Contribution guide**: `CONTRIBUTING.md`, pull-request template, bug-report and feature-request issue templates.
 
