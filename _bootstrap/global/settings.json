@@ -1,0 +1,53 @@
+{
+  "_doc": "Hook template for ~/.claude/settings.json. install.sh resolves {VAULT} automatically.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {VAULT}/_bootstrap/global/hooks/on-prompt-submit.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {VAULT}/_bootstrap/global/hooks/on-session-end.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {VAULT}/_bootstrap/global/hooks/on-pre-compact.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {VAULT}/_bootstrap/global/hooks/on-notification.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
