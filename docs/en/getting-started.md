@@ -103,7 +103,7 @@ It won't work. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/inst
 
 ```bash
 # 1. Pick a folder where you want your vault (use your home directory — no sudo needed)
-git clone https://github.com/<YOUR-GITHUB>/second-brain-starter.git ~/second-brain
+git clone https://github.com/marciohideaki/second-brain-starter.git ~/second-brain
 
 # 2. Go into it
 cd ~/second-brain

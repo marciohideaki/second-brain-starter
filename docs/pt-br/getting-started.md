@@ -100,7 +100,7 @@ Não funciona. Instale [WSL2](https://learn.microsoft.com/pt-br/windows/wsl/inst
 
 ```bash
 # 1. Clone numa pasta do seu home (sem sudo)
-git clone https://github.com/<SEU-USUARIO>/second-brain-starter.git ~/second-brain
+git clone https://github.com/marciohideaki/second-brain-starter.git ~/second-brain
 
 # 2. Entre
 cd ~/second-brain
