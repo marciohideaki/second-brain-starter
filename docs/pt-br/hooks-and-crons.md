@@ -100,6 +100,30 @@ Sem LLM. Verifica:
 
 Escreve `_memory/lint-latest.md`. Alerta crítico no heartbeat se > 5 defeitos.
 
+### `graph_metrics.py` — sob demanda ou agendado
+
+Sem LLM. Python stdlib puro. Produz `_memory/graph-metrics.md` com:
+
+- Total de `.md` e total de WikiLinks (só prosa, ignora frontmatter/code).
+- Ilhas por categoria (arquivos sem links de saída).
+- Top 15 hubs por in-degree.
+- Lista de WikiLinks quebrados (alvo: 0).
+- Violações de frontmatter contra a taxonomia embutida.
+
+Rodar:
+
+```bash
+python3 _bootstrap/scripts/graph_metrics.py
+```
+
+Ou agendar semanal:
+
+```
+0 8 * * 1 python3 {VAULT}/_bootstrap/scripts/graph_metrics.py >> {VAULT}/.logs/graph-metrics.log 2>&1
+```
+
+O arquivo de saída é gitignored — é artefato derivado, o vault markdown é a source of truth.
+
 ### `weekly-prompt-consolidation.sh` — domingo 23:00
 
 Sem LLM no momento do cron. Verifica os prompts acumulados em `_memory/.prompt-log.txt` (escrito pelo `on-prompt-submit.sh`). Quando o total cruza um threshold (default: 30):
