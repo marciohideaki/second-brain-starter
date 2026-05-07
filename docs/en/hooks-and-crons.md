@@ -105,6 +105,22 @@ No LLM needed. Checks:
 
 Writes `_memory/lint-latest.md`. Appends a critical alert to `_memory/heartbeat-latest.md` if defects exceed 5.
 
+### `weekly-prompt-consolidation.sh` — Sunday at 23:00
+
+No LLM needed at cron time. Checks accumulated prompts in `_memory/.prompt-log.txt` (written by `on-prompt-submit.sh`). When the count crosses a threshold (default 30):
+
+- Generates structural stats: total prompts, slash command count, distinct project cwds, top 5 slash commands.
+- Writes `_memory/.prompt-log-stats.txt`.
+- Creates `_memory/.consolidation-ready` flag — `on-prompt-submit.sh` surfaces it on your next prompt with a suggestion to run an LLM analysis (skill of your choice).
+
+The actual pattern analysis happens only when you invoke the skill — the cron just decides *when* there's enough signal to be worth analysing. Build your own analysis skill on top of `_memory/.prompt-log.txt` + `_memory/.prompt-log-stats.txt`.
+
+To register the cron:
+
+```
+0 23 * * 0 bash {VAULT}/_bootstrap/scripts/weekly-prompt-consolidation.sh >> {VAULT}/.logs/weekly-prompt-consolidation.log 2>&1
+```
+
 ---
 
 ## Session flags

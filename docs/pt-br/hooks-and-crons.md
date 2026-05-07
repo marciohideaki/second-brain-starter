@@ -100,6 +100,22 @@ Sem LLM. Verifica:
 
 Escreve `_memory/lint-latest.md`. Alerta crítico no heartbeat se > 5 defeitos.
 
+### `weekly-prompt-consolidation.sh` — domingo 23:00
+
+Sem LLM no momento do cron. Verifica os prompts acumulados em `_memory/.prompt-log.txt` (escrito pelo `on-prompt-submit.sh`). Quando o total cruza um threshold (default: 30):
+
+- Gera estatísticas estruturais: total de prompts, contagem de slash commands, cwds distintos, top 5 slash commands.
+- Escreve `_memory/.prompt-log-stats.txt`.
+- Cria flag `_memory/.consolidation-ready` — o `on-prompt-submit.sh` exibe um aviso no próximo prompt sugerindo rodar uma análise via LLM (skill à sua escolha).
+
+A análise real de padrões só acontece quando você invoca a skill — o cron apenas decide *quando* há sinal suficiente para valer a pena. Construa sua própria skill de análise sobre `_memory/.prompt-log.txt` + `_memory/.prompt-log-stats.txt`.
+
+Para registrar o cron:
+
+```
+0 23 * * 0 bash {VAULT}/_bootstrap/scripts/weekly-prompt-consolidation.sh >> {VAULT}/.logs/weekly-prompt-consolidation.log 2>&1
+```
+
 ---
 
 ## Flags de sessão
