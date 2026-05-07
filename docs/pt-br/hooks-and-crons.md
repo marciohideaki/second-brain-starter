@@ -74,6 +74,18 @@ Dispara antes de compactação de contexto. Faz:
 
 Dispara ao concluir operação longa. Toast Windows (WSL) ou bell do terminal (Linux/macOS).
 
+### `PostToolUse` → `on-post-tool-use.sh`
+
+Dispara depois que `Write`, `Edit` ou `MultiEdit` escreve um `.md` em pasta curada do vault (`_knowledge/projects/*/`, `_decisions/`, `_learnings/`, `_pipeline/`, `_sources/`, `_wiki/`). Valida frontmatter mínimo:
+
+- Arquivo começa com `---` (bloco de frontmatter presente).
+- Frontmatter contém campo `tags:`.
+- Frontmatter contém campo `status:`.
+
+Arquivos que começam com `_` (ex: `_template.md`, `_example.md`) são pulados — tratados como templates. Modo default é não-bloqueante: warnings em stderr, exit 0. Defina `LINT_STRICT=1` no ambiente para rejeitar a tool call (exit 2) quando faltar frontmatter.
+
+Bash puro + jq, sem Python, sem LLM. Timeout: 5 segundos.
+
 ---
 
 ## Cron jobs (orientados a tempo, rodam fora do Claude Code)

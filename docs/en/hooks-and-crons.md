@@ -77,6 +77,18 @@ Fires just before Claude Code compacts the context. It:
 
 Fires when a long-running Claude Code operation finishes. Shows a Windows toast (WSL) or terminal bell (Linux/macOS).
 
+### `PostToolUse` → `on-post-tool-use.sh`
+
+Fires after `Write`, `Edit`, or `MultiEdit` writes a `.md` file into a curated vault dir (`_knowledge/projects/*/`, `_decisions/`, `_learnings/`, `_pipeline/`, `_sources/`, `_wiki/`). Validates minimal frontmatter:
+
+- File starts with `---` (frontmatter block present).
+- Frontmatter contains a `tags:` field.
+- Frontmatter contains a `status:` field.
+
+Files starting with `_` (e.g., `_template.md`, `_example.md`) are skipped — they're treated as templates. Default mode is non-blocking: warnings to stderr, exit 0. Set `LINT_STRICT=1` in the environment to make missing frontmatter reject the tool call (exit 2).
+
+Pure bash + jq, no Python, no LLM. Timeout: 5 seconds.
+
 ---
 
 ## Cron jobs (time-driven, run outside Claude Code)
