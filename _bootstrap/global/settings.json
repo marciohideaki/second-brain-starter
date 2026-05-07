@@ -48,6 +48,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash {VAULT}/_bootstrap/global/hooks/on-post-tool-use.sh",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   }
 }
