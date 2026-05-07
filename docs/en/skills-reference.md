@@ -484,6 +484,39 @@ Prioritized actions:
 
 ---
 
+### `/justify [proposal]`
+
+Cross-checks a proposal/decision against the vault. Classifies prior records as **precedent**, **contradiction**, or **adjacent**, then issues a verdict (PROCEED / ADJUST / BLOCKED). Pure grep over `_decisions/`, `_learnings/`, `_wiki/` — no semantic retrieval, no external dependency.
+
+**Use when:** before `/rfc`, before `/braindump` on non-trivial calls, or whenever you suspect an idea may collide with an existing ADR.
+
+**Command:**
+```
+/justify "Adopt Resend instead of Postmark for transactional email in newsletter-tool"
+```
+
+**Sample output:**
+```
+Proposal under review
+
+> Adopt Resend instead of Postmark for transactional email in newsletter-tool.
+
+Precedents
+- ✓ ADR 2026-04-19-resend-over-postmark — already chose Resend for cost reasons.
+
+Contradictions
+- (none)
+
+Adjacent context
+- · _learnings/email-deliverability-baseline.md — sets target metrics regardless of provider.
+
+Verdict: PROCEED — precedent is direct, no active ADR contradicts.
+
+Next action: link the new implementation back to the existing ADR; no new decision file needed.
+```
+
+---
+
 ### `/predict [project] [k=N]`
 
 Predicts the most likely next tasks for a project, ranked by confidence, based on its `work-log` + `roadmap` + `state` files. Heuristic-only — no LLM speculation beyond what the files say.

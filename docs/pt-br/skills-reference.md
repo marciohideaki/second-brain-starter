@@ -463,6 +463,39 @@ Ações prioritizadas:
 
 ---
 
+### `/justify [proposta]`
+
+Cruza uma proposta/decisão contra o vault. Classifica registros anteriores como **precedente**, **contradição** ou **adjacente** e emite veredicto (PROSSEGUIR / AJUSTAR / BLOQUEADO). Grep puro sobre `_decisions/`, `_learnings/`, `_wiki/` — sem retrieval semântico, sem dependência externa.
+
+**Quando usar:** antes de `/rfc`, antes de `/braindump` em decisões não-triviais, ou sempre que suspeitar que uma ideia colide com ADR existente.
+
+**Comando:**
+```
+/justify "Adotar Resend no lugar de Postmark para emails transacionais no newsletter-tool"
+```
+
+**Exemplo de output:**
+```
+Proposta sob análise
+
+> Adotar Resend no lugar de Postmark para emails transacionais no newsletter-tool.
+
+Precedentes
+- ✓ ADR 2026-04-19-resend-over-postmark — já escolheu Resend por custo.
+
+Contradições
+- (nenhuma)
+
+Contexto adjacente
+- · _learnings/email-deliverability-baseline.md — fixa métricas-alvo independente do provider.
+
+Veredicto: PROSSEGUIR — precedente direto, nenhum ADR ativo contradiz.
+
+Próxima ação: linkar a nova implementação ao ADR existente; sem novo arquivo de decisão.
+```
+
+---
+
 ### `/predict [projeto] [k=N]`
 
 Prediz as próximas tarefas mais prováveis de um projeto, ranqueadas por confiança, com base no `work-log` + `roadmap` + `state`. Heurística pura — sem especulação além do que os arquivos dizem.
