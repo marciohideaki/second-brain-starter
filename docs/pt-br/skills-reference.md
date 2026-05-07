@@ -463,6 +463,44 @@ Ações prioritizadas:
 
 ---
 
+### `/predict [projeto] [k=N]`
+
+Prediz as próximas tarefas mais prováveis de um projeto, ranqueadas por confiança, com base no `work-log` + `roadmap` + `state`. Heurística pura — sem especulação além do que os arquivos dizem.
+
+**Quando usar:** planejando uma sessão e querendo sinal sobre o que o próprio projeto implica que deve vir.
+
+**Comando:**
+```
+/predict newsletter-tool k=5
+```
+
+**Exemplo de output:**
+```
+Predictions: newsletter-tool
+
+Distribuição de tipos (últimas 12 entradas):
+- feature: 5 entries
+- fix: 3 entries
+- chore: 2 entries
+- task: 2 entries
+
+Cadência: hot (4 dias entre entradas recentes)
+
+Sinais do state: Fase 2 — POC; next step "wire Resend webhook"; sem blocker.
+
+Top 3 predições para a próxima sessão:
+
+| # | Tipo | Descrição | Confiança | Fonte |
+|---|------|-----------|-----------|-------|
+| 1 | feature | Wire Resend webhook ponta-a-ponta | 85% | state.md next-step |
+| 2 | task | Review/merge PR #14 aberta | 60% | state.md PRs |
+| 3 | fix | Reproduzir sender-id 422 do log de ontem | 40% | work-log recent fix pattern |
+
+Caveats: heurística — humano confirma antes de executar.
+```
+
+---
+
 ### `/skill-improve [caminho]`
 
 Loop de autoresearch estilo Karpathy: muta, testa, pontua, mantém ganhos.

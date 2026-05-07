@@ -484,6 +484,44 @@ Prioritized actions:
 
 ---
 
+### `/predict [project] [k=N]`
+
+Predicts the most likely next tasks for a project, ranked by confidence, based on its `work-log` + `roadmap` + `state` files. Heuristic-only — no LLM speculation beyond what the files say.
+
+**Use when:** you're planning a session and want signal on what the project itself implies should come next.
+
+**Command:**
+```
+/predict newsletter-tool k=5
+```
+
+**Sample output:**
+```
+Predictions: newsletter-tool
+
+Type distribution (last 12 entries):
+- feature: 5 entries
+- fix: 3 entries
+- chore: 2 entries
+- task: 2 entries
+
+Cadence: hot (4 days between recent entries)
+
+State signals: Phase 2 — POC; next step "wire Resend webhook"; no blocker.
+
+Top 3 predictions for next session:
+
+| # | Type | Description | Confidence | Source |
+|---|------|-------------|------------|--------|
+| 1 | feature | Wire Resend webhook end-to-end | 85% | state.md next-step |
+| 2 | task | Review/merge open PR #14 | 60% | state.md PRs |
+| 3 | fix | Reproduce sender-id 422 from yesterday's log | 40% | work-log recent fix pattern |
+
+Caveats: heuristic only — humans confirm before executing.
+```
+
+---
+
 ### `/skill-improve [path]`
 
 Runs a Karpathy-style autoresearch loop on a target skill: mutate, test, score, keep the wins.
