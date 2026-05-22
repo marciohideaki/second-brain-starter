@@ -1,6 +1,6 @@
 #!/bin/bash
 # Smoke-test the Cursor adapter in an isolated HOME. Verifies it creates the
-# SSOT rule and 12 skill rules without touching the real ~/.cursor.
+# SSOT rule and skill rules without touching the real ~/.cursor.
 
 set -e
 
@@ -18,10 +18,10 @@ if [ ! -f "$TEST_HOME/.cursor/rules/00-second-brain.mdc" ]; then
   exit 1
 fi
 
-# 12 skill rules exist
+# Skill rules exist
 count=$(find "$TEST_HOME/.cursor/rules" -maxdepth 1 -name "skill-*.mdc" | wc -l)
 if [ "$count" -lt 12 ]; then
-  echo "Expected 12+ skill rules, got $count"
+  echo "Expected at least 12 skill rules, got $count"
   exit 1
 fi
 

@@ -5,7 +5,7 @@
 ## What it does
 
 1. Converts `CLAUDE.md` into `~/.cursor/rules/00-second-brain.mdc` (the vault SSOT).
-2. Converts each of the 12 skills into a `~/.cursor/rules/skill-<name>.mdc` rule with `alwaysApply: false` and a description so Cursor loads the rule when the user invokes it by name.
+2. Converts each skill into a `~/.cursor/rules/skill-<name>.mdc` rule with `alwaysApply: false` and a description so Cursor loads the rule when the user invokes it by name.
 3. Registers the same cron jobs as the Claude Code setup (they're agent-agnostic — they run in the OS, not in the agent).
 
 ## How to use after installing

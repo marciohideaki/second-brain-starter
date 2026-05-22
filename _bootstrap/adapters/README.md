@@ -9,7 +9,7 @@ Multi-agent layer. Each adapter installs the same vault skills, scripts, and kno
 | **Claude Code** (default) | `CLAUDE.md` | `~/.claude/commands/` | ✅ 4 events | ✅ | stable |
 | **Cursor** | `~/.cursor/rules/*.mdc` | via description-matched rules | ❌ | ✅ | **functional** |
 | **Gemini CLI** | `GEMINI.md` | TOML custom commands | ⚠️ MCP only | ✅ | beta |
-| **Codex CLI** | `AGENTS.md` | inline AGENTS.md | ❌ | ✅ | stub — PR welcome |
+| **Codex CLI** | `AGENTS.md` + `~/.codex/skills/` | Codex skills | ❌ | ✅ | functional |
 | **Antigravity** | `AGENTS.md` | MCP tools | ⚠️ MCP only | ✅ | stub — PR welcome |
 
 ## Installing an adapter
@@ -29,7 +29,7 @@ You can install multiple adapters in sequence — each uses its own configuratio
 ## What every adapter does
 
 1. **Converts `CLAUDE.md`** into the agent's SSOT file (GEMINI.md, AGENTS.md, .cursor/rules/).
-2. **Exposes the 12 skills** in whatever format the agent uses (slash commands, rules, or inline prompts).
+2. **Exposes the skills** in whatever format the agent uses (slash commands, rules, Codex skills, or inline prompts).
 3. **Registers cron jobs** for `daily-heartbeat.sh` and `weekly-vault-lint.sh` (same as Claude Code — OS cron is agent-agnostic).
 4. **Documents limitations** specific to that agent (missing hooks, degraded continuity, etc.).
 

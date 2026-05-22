@@ -1,26 +1,37 @@
 # Codex CLI adapter
 
-**Status:** stub. Installs `AGENTS.md` (the emerging industry standard for coding agents) in the vault root. Custom commands and hooks are not implemented — Codex CLI doesn't expose equivalent primitives.
+**Status:** functional. Installs `AGENTS.md`, converts each command in `_bootstrap/global/commands/` into a Codex skill, mirrors those skills into the target vault, and registers the same agent-agnostic cron jobs as the Claude Code installer.
 
-## What the stub does
+## What it does
 
-1. Generates `AGENTS.md` in the vault root from `CLAUDE.md`.
-2. Registers the cron jobs (agent-agnostic).
+1. Generates `AGENTS.md` in the target vault if it does not already exist.
+2. Installs one Codex skill per command in `~/.codex/skills/<prefix>-<name>`.
+3. Mirrors those generated skills into `{target-vault}/.codex/skills/` for auditability.
+4. Registers cron jobs for daily heartbeat and weekly lint.
 
-## Why it's a stub
+## Source and target vaults
 
-Codex CLI (OpenAI) reads `AGENTS.md` at session start and follows its instructions. It does **not** expose:
-- Event hooks (no UserPromptSubmit / SessionEnd / PreCompact / Notification).
-- A dedicated slash-command system (skills must be invoked via natural language).
-
-Result: you keep the knowledge structure (_sources, _wiki, _learnings, _decisions) and the daily/weekly crons, but you lose session-continuity automation. You must run `/end-session` (as a prompt) explicitly at day's end.
-
-## Install
+The adapter supports a separate source repository and target vault:
 
 ```bash
-./install.sh --agent=codex
+./install.sh --agent=codex --target-vault ~/my-second-brain --vault-prefix mybrain
 ```
 
-## Contributing
+Without `--target-vault`, the source repository is used as the vault for single-directory installs.
 
-If Codex CLI adds hook-like behavior or a custom-command system in the future, please open a PR to extend this adapter.
+## Limitations
+
+Codex CLI does not expose Claude Code-style event hooks, so session continuity is explicit:
+
+- Run the generated end-session skill at the end of productive sessions.
+- Check `_memory/heartbeat-latest.md` and `_memory/lint-latest.md` when returning to the vault.
+- Cron jobs still run because they are OS-level, not agent-specific.
+
+## Invocation
+
+Codex skills are installed with the chosen prefix:
+
+```text
+Use $mybrain-braindump on this thought: ...
+Use $mybrain-end-session with the current session.
+```

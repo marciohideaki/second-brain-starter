@@ -13,7 +13,7 @@ O starter foi desenhado primariamente para Claude Code, que oferece a superfíci
 | Hook `PreCompact` | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Hook `Notification` | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Cron jobs (heartbeat + lint) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Status geral | **estável** | **funcional** | **beta** | **stub** | **stub** |
+| Status geral | **estável** | **funcional** | **beta** | **funcional** | **leve** |
 
 ## Como instalar cada um
 
@@ -21,8 +21,8 @@ O starter foi desenhado primariamente para Claude Code, que oferece a superfíci
 ./install.sh                      # default: Claude Code
 ./install.sh --agent=cursor       # Cursor (funcional)
 ./install.sh --agent=gemini-cli   # Gemini CLI (beta — SSOT + cron, commands manual)
-./install.sh --agent=codex        # Codex CLI (stub — SSOT + cron)
-./install.sh --agent=antigravity  # Antigravity (stub — SSOT + cron)
+./install.sh --agent=codex        # Codex CLI (AGENTS.md + skills Codex + cron)
+./install.sh --agent=antigravity  # Antigravity (AGENTS.md + cron)
 ```
 
 Pode instalar múltiplos adapters ao mesmo tempo — cada um escreve em local específico (`~/.claude/`, `~/.cursor/`, `~/.gemini/`, `AGENTS.md`), sem conflito.
@@ -40,13 +40,19 @@ Rode a skill braindump: estou empatado entre ideias.
 Cursor reconhece a rule pela descrição e aplica as instruções da skill.
 
 ### Gemini CLI
-GEMINI.md é lido no start, mas as 12 skills ainda não foram convertidas para TOML. Por enquanto, referencie manualmente:
+GEMINI.md é lido no start, mas as skills ainda não foram convertidas para TOML. Por enquanto, referencie manualmente:
 ```
 Siga a abordagem de _bootstrap/global/commands/braindump.md neste texto: ...
 ```
 
-### Codex CLI & Antigravity
-AGENTS.md é lido no start. Skills descritas dentro. Invoque via linguagem natural (mesmo padrão do Cursor).
+### Codex CLI
+AGENTS.md é lido no start, e cada skill é instalada em `~/.codex/skills/<prefix>-<nome>`. Invoque pelo nome:
+```
+Use $meubrain-braindump on this thought: ...
+```
+
+### Antigravity
+AGENTS.md é lido no start. Invoque skills por linguagem natural até existir wrapper MCP nativo.
 
 ## Por que hooks só funcionam no Claude Code
 
@@ -72,7 +78,7 @@ PRs da comunidade mais esperadas:
 1. **Gemini CLI: skills → comandos TOML.** Converter cada um dos 12 `.md` em `~/.gemini/commands/<nome>.toml`.
 2. **Gemini CLI: servidor MCP para hooks.** Um MCP server leve expondo `SessionEnd`-like fecharia o gap de continuidade.
 3. **Antigravity: wrappers MCP.** Envolver cada skill como ferramenta MCP para aparecer nativamente no tool picker.
-4. **Codex CLI: qualquer sistema de custom commands que surja.** Codex é jovem; se adicionarem slash-commands, converter as skills.
+4. **Codex CLI: suporte de ciclo de vida parecido com hooks.** O adapter já instala skills Codex; automação de continuidade depende de um futuro mecanismo de hooks.
 
 ## Quando não vale se preocupar com multi-agente?
 

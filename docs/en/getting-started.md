@@ -13,7 +13,7 @@ A 10-minute tour from zero to a working second brain — written for someone who
 flowchart TB
     subgraph Global["GLOBAL mode (any session, any folder)"]
         G1[~/.claude/CLAUDE.md<br/>points to your vault]
-        G2[~/.claude/commands/<br/>12 skills available]
+        G2[~/.claude/commands/<br/>skills available]
         G3[~/.claude/settings.json<br/>4 hooks + cron entries]
     end
 

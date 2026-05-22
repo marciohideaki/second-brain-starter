@@ -16,7 +16,7 @@ Vault active at `{VAULT}`.
 
 ### Available skills
 
-`/init`, `/braindump`, `/ingest`, `/wiki-build`, `/focus`, `/daily-briefing`, `/weekly-review`, `/end-session`, `/session-handoff`, `/content-idea`, `/lint`, `/skill-improve`.
+`/init`, `/braindump`, `/ingest`, `/wiki-build`, `/focus`, `/daily-briefing`, `/weekly-review`, `/end-session`, `/session-handoff`, `/content-idea`, `/justify`, `/predict`, `/lint`, `/skill-improve`.
 
 ---
 

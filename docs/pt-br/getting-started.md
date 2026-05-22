@@ -13,7 +13,7 @@ Tour de 10 minutos do zero ao segundo cérebro — escrito para quem nunca usou 
 flowchart TB
     subgraph Global["Modo GLOBAL (qualquer sessão, qualquer pasta)"]
         G1[~/.claude/CLAUDE.md<br/>aponta pro vault]
-        G2[~/.claude/commands/<br/>12 skills disponíveis]
+        G2[~/.claude/commands/<br/>skills disponíveis]
         G3[~/.claude/settings.json<br/>4 hooks + crons]
     end
 

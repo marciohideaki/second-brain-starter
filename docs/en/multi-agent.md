@@ -13,7 +13,7 @@ The starter is primarily designed for Claude Code, which offers the richest auto
 | `PreCompact` hook | ✅ | ❌ | ❌ | ❌ | ❌ |
 | `Notification` hook | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Cron jobs (heartbeat + lint) | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Overall status | **stable** | **functional** | **beta** | **stub** | **stub** |
+| Overall status | **stable** | **functional** | **beta** | **functional** | **lightweight** |
 
 ## How to install
 
@@ -23,8 +23,8 @@ Each agent has its own `--agent` flag for the installer:
 ./install.sh                      # default: Claude Code
 ./install.sh --agent=cursor       # Cursor (functional)
 ./install.sh --agent=gemini-cli   # Gemini CLI (beta — SSOT + cron only, commands manual)
-./install.sh --agent=codex        # Codex CLI (stub — SSOT + cron only)
-./install.sh --agent=antigravity  # Antigravity (stub — SSOT + cron only)
+./install.sh --agent=codex        # Codex CLI (AGENTS.md + Codex skills + cron)
+./install.sh --agent=antigravity  # Antigravity (AGENTS.md + cron)
 ```
 
 You can install multiple adapters simultaneously. Each writes to its own agent-specific location (`~/.claude/`, `~/.cursor/`, `~/.gemini/`, `AGENTS.md`), so they don't conflict.
@@ -42,13 +42,19 @@ Run the braindump skill: I keep bouncing between ideas.
 Cursor matches the rule via its description and applies the skill's instructions.
 
 ### Gemini CLI
-GEMINI.md is read at session start, but the 12 skills are not yet converted to TOML. For now, reference them manually:
+GEMINI.md is read at session start, but the skills are not yet converted to TOML. For now, reference them manually:
 ```
 Follow the approach from _bootstrap/global/commands/braindump.md on this text: ...
 ```
 
-### Codex CLI & Antigravity
-AGENTS.md is read at session start. Skills described inside. Invoke via natural language (same pattern as Cursor).
+### Codex CLI
+AGENTS.md is read at session start, and each skill is installed under `~/.codex/skills/<prefix>-<name>`. Invoke by name:
+```
+Use $mybrain-braindump on this thought: ...
+```
+
+### Antigravity
+AGENTS.md is read at session start. Invoke skills via natural language until a native MCP wrapper exists.
 
 ## Why hooks only work in Claude Code
 
@@ -74,7 +80,7 @@ Community PRs most wanted:
 1. **Gemini CLI: skills → TOML commands.** Convert each of the 12 `.md` files into `~/.gemini/commands/<name>.toml`.
 2. **Gemini CLI: MCP hook server.** A lightweight MCP server exposing `SessionEnd`-like behavior would close the continuity gap.
 3. **Antigravity: MCP tool wrappers.** Wrap each skill as an MCP tool so they show up natively in the agent's tool picker.
-4. **Codex CLI: whatever custom-command system emerges.** Codex is still young; if they add slash-commands, convert the skills.
+4. **Codex CLI: hook-like lifecycle support.** The adapter already installs Codex skills; continuity automation would need a future Codex hook mechanism.
 
 ## When should I not bother with multi-agent?
 

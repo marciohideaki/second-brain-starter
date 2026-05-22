@@ -13,7 +13,7 @@ Antigravity (Google) uses `AGENTS.md` as the primary instruction file and expose
 
 A complete Antigravity adapter would:
 
-1. Wrap each of the 12 skills as an MCP tool, or convert them into `.agents/commands/` (if that convention exists in your Antigravity version).
+1. Wrap each skill as an MCP tool, or convert them into `.agents/commands/` (if that convention exists in your Antigravity version).
 2. Expose a hook-like MCP server that observes session events and writes to `_memory/`.
 3. Provide an Antigravity-specific set of tool descriptions.
 

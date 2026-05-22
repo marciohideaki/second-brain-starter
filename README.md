@@ -25,7 +25,7 @@
 - [Prerequisites](#prerequisites)
 - [Install](#install)
 - [First 15 minutes](#first-15-minutes)
-- [The 12 skills](#the-12-skills)
+- [The 14 skills](#the-14-skills)
 - [How this differs from other tools](#how-this-differs-from-other-tools)
 - [Multi-agent support](#multi-agent-support)
 - [Philosophy](#philosophy)
@@ -165,7 +165,7 @@ The installer is idempotent — safe to run as many times as you want. It will n
 
 **What the installer does** (all reversible):
 
-1. Creates shortcuts to 12 skills so Claude Code recognizes them in any folder.
+1. Creates shortcuts to 14 skills so Claude Code recognizes them in any folder.
 2. Adds 4 small scripts that run automatically when Claude starts/ends a session.
 3. Adds 2 scheduled tasks to your crontab (a daily health check and a weekly lint).
 4. Appends a "Second Brain" section to `~/.claude/CLAUDE.md` so Claude reads your vault at session start.
@@ -251,10 +251,10 @@ That's the rhythm. Everything else (hooks, cron jobs) happens in the background 
 
 ---
 
-## The 12 skills
+## The 14 skills
 
 <p align="center">
-  <img src="docs/assets/skills-map.png" alt="Visual map of the 12 skills grouped by category: setup, capture, compile, daily rhythm, close/resume, output, and maintenance" width="800">
+  <img src="docs/assets/skills-map.png" alt="Visual map of the skills grouped by category: setup, capture, compile, daily rhythm, close/resume, output, and maintenance" width="800">
 </p>
 
 | Skill | What it does | Example |
@@ -269,6 +269,8 @@ That's the rhythm. Everything else (hooks, cron jobs) happens in the background 
 | `/end-session` | Closes session, saves learnings, updates project state | `/end-session` |
 | `/session-handoff` | Writes HANDOFF.md so tomorrow's session resumes cleanly | `/session-handoff` |
 | `/content-idea [topic]` | Generates 3-7 content ideas grounded in YOUR real material | `/content-idea LinkedIn post` |
+| `/justify [proposal]` | Checks a proposal against prior decisions, learnings, and wiki pages | `/justify "Adopt tool X"` |
+| `/predict [project]` | Predicts likely next tasks from project state, roadmap, and work log | `/predict my-project` |
 | `/lint` | Checks vault health, flags broken links and stale notes | `/lint` |
 | `/skill-improve [path]` | Runs an AI self-improvement loop on any skill | `/skill-improve _bootstrap/global/commands/content-idea.md` |
 
@@ -299,8 +301,8 @@ Primary support is **Claude Code** (the richest set of hooks + native slash-comm
 | Claude Code | **stable** (default) | `./install.sh` |
 | [Cursor](https://cursor.com) | **functional** | `./install.sh --agent=cursor` |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | **beta** (SSOT + cron only) | `./install.sh --agent=gemini-cli` |
-| [Codex CLI](https://github.com/openai/codex) | **stub** (community PR welcome) | `./install.sh --agent=codex` |
-| Antigravity | **stub** (community PR welcome) | `./install.sh --agent=antigravity` |
+| [Codex CLI](https://github.com/openai/codex) | **functional** (skills + AGENTS.md + cron, no hooks) | `./install.sh --agent=codex` |
+| Antigravity | **lightweight** (AGENTS.md + cron) | `./install.sh --agent=antigravity` |
 
 **What you lose outside Claude Code:** the 4 event hooks (auto-detection of skipped `/end-session`, pre-compaction state snapshots, prompt logging, long-op notifications). Cron jobs and skill definitions still work in every adapter.
 
@@ -362,7 +364,7 @@ Claude forgets everything between sessions. This starter teaches Claude to read 
 
 ### "Will this work with other AI tools like Cursor, Gemini CLI, etc.?"
 
-Yes, with different maturity levels. Claude Code is the primary target (all 4 hooks supported). Cursor has a **functional adapter** (rules + cron, no hooks). Gemini CLI, Codex CLI, and Antigravity have **stub adapters** (SSOT + cron; commands and hooks welcome PRs). Full matrix: [docs/en/multi-agent.md](docs/en/multi-agent.md).
+Yes, with different maturity levels. Claude Code is the primary target (all 4 hooks supported). Cursor and Codex CLI have **functional adapters** (skills/rules + cron, no hooks). Gemini CLI is beta and Antigravity is a lightweight AGENTS.md adapter. Full matrix: [docs/en/multi-agent.md](docs/en/multi-agent.md).
 
 ---
 
@@ -517,8 +519,8 @@ Suporte primário é **Claude Code** (4 hooks + slash-commands nativos). Existem
 | Claude Code | **estável** (default) | `./install.sh` |
 | [Cursor](https://cursor.com) | **funcional** | `./install.sh --agent=cursor` |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | **beta** (SSOT + cron) | `./install.sh --agent=gemini-cli` |
-| [Codex CLI](https://github.com/openai/codex) | **stub** (PR welcome) | `./install.sh --agent=codex` |
-| Antigravity | **stub** (PR welcome) | `./install.sh --agent=antigravity` |
+| [Codex CLI](https://github.com/openai/codex) | **funcional** (skills + AGENTS.md + cron, sem hooks) | `./install.sh --agent=codex` |
+| Antigravity | **leve** (AGENTS.md + cron) | `./install.sh --agent=antigravity` |
 
 Fora do Claude Code você perde os 4 hooks de evento. Crons e skills continuam funcionando.
 

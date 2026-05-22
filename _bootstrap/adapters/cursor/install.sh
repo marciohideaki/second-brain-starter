@@ -2,21 +2,32 @@
 # Cursor adapter — installs second-brain-starter for Cursor.
 #
 # Invoked by the root install.sh with --agent=cursor.
-# Reads the vault path from $1 (passed by the root script).
+# Reads source and target vault paths from the root script.
 
 set -e
 
-VAULT="${1:-$(cd "$(dirname "$0")/../../.." && pwd)}"
-BOOTSTRAP="$VAULT/_bootstrap"
+SOURCE_ROOT="${1:-$(cd "$(dirname "$0")/../../.." && pwd)}"
+TARGET_VAULT="${2:-${SECOND_BRAIN_VAULT:-$SOURCE_ROOT}}"
+VAULT_NAME="${3:-$(basename "$TARGET_VAULT")}"
+VAULT_PREFIX="${4:-second-brain}"
+SOURCE_ROOT="$(cd "$SOURCE_ROOT" && pwd)"
+TARGET_VAULT="$(mkdir -p "$TARGET_VAULT" && cd "$TARGET_VAULT" && pwd)"
+BOOTSTRAP="$SOURCE_ROOT/_bootstrap"
 ADAPTER="$BOOTSTRAP/adapters/cursor"
 CURSOR_RULES="$HOME/.cursor/rules"
+TARGET_BOOTSTRAP="$TARGET_VAULT/_bootstrap"
+TARGET_COMMANDS_DIR="$TARGET_BOOTSTRAP/global/commands"
+TARGET_SCRIPTS_DIR="$TARGET_BOOTSTRAP/scripts"
 
 echo "=== second-brain-starter — Cursor adapter ==="
-echo "Vault        : $VAULT"
+echo "Source       : $SOURCE_ROOT"
+echo "Vault        : $TARGET_VAULT"
+echo "Name         : $VAULT_NAME"
+echo "Prefix       : $VAULT_PREFIX"
 echo "Cursor rules : $CURSOR_RULES"
 echo ""
 
-mkdir -p "$CURSOR_RULES" "$VAULT/.logs"
+mkdir -p "$CURSOR_RULES" "$TARGET_VAULT/.logs"
 
 # ---------------------------------------------------------------------------
 # STEP 1 — SSOT rule (always applied): the CLAUDE.md content
@@ -26,10 +37,10 @@ echo "[1/3] SSOT rule..."
 SSOT_DEST="$CURSOR_RULES/00-second-brain.mdc"
 
 # Header with frontmatter
-sed "s|{VAULT}|$VAULT|g" "$ADAPTER/templates/cursorrules-header.mdc" > "$SSOT_DEST"
+sed "s|{VAULT}|$TARGET_VAULT|g" "$ADAPTER/templates/cursorrules-header.mdc" > "$SSOT_DEST"
 
 # Append CLAUDE.md body (strip its H1 since the header already has the title)
-awk 'NR > 1 || !/^# /' "$VAULT/CLAUDE.md" | sed "s|{VAULT}|$VAULT|g" >> "$SSOT_DEST"
+awk 'NR > 1 || !/^# /' "$TARGET_VAULT/CLAUDE.md" | sed "s|{VAULT}|$TARGET_VAULT|g" >> "$SSOT_DEST"
 
 echo "  ✓ $SSOT_DEST"
 
@@ -39,7 +50,7 @@ echo "  ✓ $SSOT_DEST"
 echo ""
 echo "[2/3] Skill rules..."
 
-for src in "$BOOTSTRAP/global/commands/"*.md; do
+for src in "$TARGET_COMMANDS_DIR/"*.md; do
   [ -f "$src" ] || continue
   name=$(basename "$src" .md)
   dst="$CURSOR_RULES/skill-$name.mdc"
@@ -56,7 +67,7 @@ alwaysApply: false
 
 # /$name skill
 
-$(sed '/^---$/,/^---$/d' "$src" | sed "s|{VAULT}|$VAULT|g")
+$(sed '/^---$/,/^---$/d' "$src" | sed "s|{VAULT}|$TARGET_VAULT|g")
 EOF
 
   echo "  ✓ skill-$name.mdc"
@@ -76,10 +87,11 @@ add_cron() {
   local schedule="$1"
   local script="$2"
   local label="$3"
-  local logfile="$VAULT/.logs/${script%.sh}.log"
-  local line="$schedule bash $BOOTSTRAP/scripts/$script >> $logfile 2>&1"
+  local logfile="$TARGET_VAULT/.logs/${script%.sh}.log"
+  local script_path="$TARGET_SCRIPTS_DIR/$script"
+  local line="$schedule bash $script_path >> $logfile 2>&1"
 
-  if echo "$CRON_CURRENT" | grep -q "$BOOTSTRAP/scripts/$script"; then
+  if echo "$CRON_CURRENT" | grep -q "$script_path"; then
     echo "  - $label (already present)"
   else
     CRON_UPDATED="${CRON_UPDATED}"$'\n'"$line"
@@ -103,7 +115,7 @@ echo "=== Cursor adapter installed ==="
 echo ""
 echo "Rules installed at: $CURSOR_RULES"
 echo "  - 00-second-brain.mdc       (SSOT, always active)"
-echo "  - skill-<name>.mdc          (12 skills, loaded on demand)"
+echo "  - skill-<name>.mdc          (skills, loaded on demand)"
 echo ""
 echo "How to invoke a skill:"
 echo "  Open Cursor, then type in the chat:"

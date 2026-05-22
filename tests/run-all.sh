@@ -33,6 +33,8 @@ run_test "directory structure"                  "test-structure.sh"
 run_test "skills frontmatter"                   "test-skills-frontmatter.sh"
 run_test "install.sh argument handling"         "test-install.sh"
 run_test "cursor adapter (isolated)"            "test-cursor-adapter.sh"
+run_test "codex adapter (isolated)"             "test-codex-adapter.sh"
+run_test "gemini/antigravity adapters"          "test-gemini-antigravity-adapters.sh"
 run_test "no proprietary terms in public files" "test-no-proprietary-terms.sh"
 
 echo ""

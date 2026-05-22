@@ -10,7 +10,7 @@ docs/assets/
 ├── flow-overview.png          (main flow diagram — used in README hero)
 ├── ingestion-flow.png         (how /ingest → /wiki-build works)
 ├── session-continuity.png     (how hooks preserve state across sessions)
-├── skills-map.png             (visual map of all 12 skills)
+├── skills-map.png             (visual map of available skills)
 ├── architecture.png           (global / vault / project operating modes)
 ├── banner.png                 (optional — hero banner for the README)
 └── screenshots/
@@ -35,7 +35,7 @@ docs/assets/
 
 | File | Purpose | Shows |
 |------|---------|-------|
-| `skills-map.png` | README "12 skills" section | Visual taxonomy: Setup / Capture / Compile / Rhythm / Close / Output / Maintenance |
+| `skills-map.png` | README skills section | Visual taxonomy: Setup / Capture / Compile / Rhythm / Close / Output / Maintenance |
 | `banner.png` | README top | Brand / logo / simple hero art |
 | `screenshots/*.png` | FAQ and docs | Real terminal output of skills in action |
 
