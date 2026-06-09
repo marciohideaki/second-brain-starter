@@ -19,10 +19,9 @@ TODAY=$(date '+%Y-%m-%d')
 
 mkdir -p "$VAULT/_memory"
 
-# Log session-end (only once per session)
-if [ -f "$LOG" ] && ! grep -q "\[$(date '+%Y-%m-%d')" "$LOG" | grep -q "session-end"; then
-  printf '\n## [%s] session-end | vault\n' "$TIMESTAMP" >> "$LOG"
-fi
+# Check whether the latest session close today was a real /end-session.
+LATEST_SESSION_END=""
+[ -f "$LOG" ] && LATEST_SESSION_END=$(grep "^\## \[$TODAY.*session-end | " "$LOG" 2>/dev/null | tail -1)
 
 # Update `updated:` in current-state.md
 if [ -f "$STATE" ]; then
@@ -30,10 +29,13 @@ if [ -f "$STATE" ]; then
   rm -f "${STATE}.bak"
 fi
 
-# If /end-session didn't run, leave a flag so next session knows
-END_SESSION_RAN=$(grep -c "end-session | " "$LOG" 2>/dev/null | tr -d '[:space:]')
-if [ "${END_SESSION_RAN:-0}" -eq 0 ]; then
+# If /end-session didn't run since the previous session close, leave a flag.
+if ! printf '%s' "$LATEST_SESSION_END" | grep -q "session-end | .*—"; then
   printf '%s\n' "$TODAY" > "$FLAG"
 fi
+
+# Record this vault session close. The next session is pending until a new
+# /end-session writes a project line.
+printf '\n## [%s] session-end | vault\n' "$TIMESTAMP" >> "$LOG"
 
 exit 0

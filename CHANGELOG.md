@@ -20,7 +20,7 @@ Initial public release.
 - **Knowledge graph structure**: `_knowledge/` (personal + per-project), `_sources/` (raw inbox), `_wiki/` (compiled cross-linked pages), `_learnings/`, `_decisions/`, `_pipeline/`, `_sessions/`, `_memory/` (current-state, activity-log, heartbeat, lint).
 - **Vault templates**: `about-me.md`, `goals.md`, `references.md`, project example folder with index/modules/work-log/gotchas/decisions, plus `_example.md` across every layer.
 - **Bilingual documentation** (EN + PT-BR, 14 files total): getting-started, skills-reference, hooks-and-crons, philosophy, FAQ, troubleshooting, multi-agent.
-- **Multi-agent adapters** (`_bootstrap/adapters/`): Cursor (functional), Gemini CLI (beta), Codex CLI (stub), Antigravity (stub). Single installer entry point: `./install.sh --agent=<agent-name>`.
+- **Multi-agent adapters** (`_bootstrap/adapters/`): Cursor (functional), Gemini CLI (beta), Codex CLI (functional), Antigravity (stub). Single installer entry point: `./install.sh --agent=<agent-name>`.
 - **Autoresearch loop** (`/skill-improve`): three-phase systematic improvement pipeline for any skill — human-in-the-loop setup with binary evals, bounded autonomous mutation loop, before/after debrief with applied patch.
 - **LLM Wiki pattern** (`/ingest` + `/wiki-build`): single-source-at-a-time ingestion with user approval before persistence, then compilation into cross-linked wiki pages with contradictions flagging.
 - **Visual assets**: 6 diagrams (banner, flow-overview, architecture, ingestion-flow, session-continuity, skills-map) and 4 terminal screenshots (init-wizard, daily-briefing, wiki-build, end-session).

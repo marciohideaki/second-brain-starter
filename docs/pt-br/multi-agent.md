@@ -13,7 +13,11 @@ O starter foi desenhado primariamente para Claude Code, que oferece a superfíci
 | Hook `PreCompact` | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Hook `Notification` | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Cron jobs (heartbeat + lint) | ✅ | ✅ | ✅ | ✅ | ✅ |
+<<<<<<< Updated upstream
 | Status geral | **estável** | **funcional** | **beta** | **funcional** | **leve** |
+=======
+| Status geral | **estável** | **funcional** | **beta** | **funcional** | **stub** |
+>>>>>>> Stashed changes
 
 ## Como instalar cada um
 
@@ -21,11 +25,18 @@ O starter foi desenhado primariamente para Claude Code, que oferece a superfíci
 ./install.sh                      # default: Claude Code
 ./install.sh --agent=cursor       # Cursor (funcional)
 ./install.sh --agent=gemini-cli   # Gemini CLI (beta — SSOT + cron, commands manual)
+<<<<<<< Updated upstream
 ./install.sh --agent=codex        # Codex CLI (AGENTS.md + skills Codex + cron)
 ./install.sh --agent=antigravity  # Antigravity (AGENTS.md + cron)
+=======
+./install.sh --agent=codex        # Codex CLI (AGENTS.md + skills globais + cron)
+./install.sh --agent=antigravity  # Antigravity (stub — SSOT + cron)
+./install.sh --agent=codex --target-vault /path/to/vault
+./install.sh --agents=claude-code,codex --vault-prefix work
+>>>>>>> Stashed changes
 ```
 
-Pode instalar múltiplos adapters ao mesmo tempo — cada um escreve em local específico (`~/.claude/`, `~/.cursor/`, `~/.gemini/`, `AGENTS.md`), sem conflito.
+Pode instalar múltiplos adapters ao mesmo tempo — cada um escreve em local específico (`~/.claude/`, `~/.cursor/`, `~/.gemini/`, `AGENTS.md`), sem conflito. Use `--target-vault` ou `SECOND_BRAIN_VAULT` quando o repositório fonte e o vault operacional forem diretórios separados.
 
 ## Como cada agente lida com skills
 
@@ -46,6 +57,7 @@ Siga a abordagem de _bootstrap/global/commands/braindump.md neste texto: ...
 ```
 
 ### Codex CLI
+<<<<<<< Updated upstream
 AGENTS.md é lido no start, e cada skill é instalada em `~/.codex/skills/<prefix>-<nome>`. Invoque pelo nome:
 ```
 Use $meubrain-braindump on this thought: ...
@@ -53,6 +65,15 @@ Use $meubrain-braindump on this thought: ...
 
 ### Antigravity
 AGENTS.md é lido no start. Invoque skills por linguagem natural até existir wrapper MCP nativo.
+=======
+AGENTS.md é lido no start, e cada `_bootstrap/global/commands/*.md` é instalada como skill Codex global em `~/.codex/skills`. Invoque pelos nomes das skills:
+```
+Use $work-braindump on this thought: ...
+```
+
+### Antigravity
+AGENTS.md é lido no start. Skills ficam descritas dentro. Invoque via linguagem natural.
+>>>>>>> Stashed changes
 
 ## Por que hooks só funcionam no Claude Code
 
@@ -78,7 +99,11 @@ PRs da comunidade mais esperadas:
 1. **Gemini CLI: skills → comandos TOML.** Converter cada um dos 12 `.md` em `~/.gemini/commands/<nome>.toml`.
 2. **Gemini CLI: servidor MCP para hooks.** Um MCP server leve expondo `SessionEnd`-like fecharia o gap de continuidade.
 3. **Antigravity: wrappers MCP.** Envolver cada skill como ferramenta MCP para aparecer nativamente no tool picker.
+<<<<<<< Updated upstream
 4. **Codex CLI: suporte de ciclo de vida parecido com hooks.** O adapter já instala skills Codex; automação de continuidade depende de um futuro mecanismo de hooks.
+=======
+4. **Codex CLI: equivalentes de hooks se surgirem.** O adapter atual cobre AGENTS.md, skills globais e cron; hooks de evento continuam explícitos.
+>>>>>>> Stashed changes
 
 ## Quando não vale se preocupar com multi-agente?
 

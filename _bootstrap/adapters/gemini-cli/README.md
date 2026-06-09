@@ -1,10 +1,18 @@
 # Gemini CLI adapter
 
+<<<<<<< Updated upstream
 **Status:** beta. Installs the vault's SSOT as a managed `~/.gemini/<prefix>-GEMINI.md`, points `~/.gemini/GEMINI.md` at it, and registers the cron jobs. Custom commands and MCP-based hooks are not yet converted — contributions welcome.
+=======
+**Status:** beta. Installs the vault's SSOT as `~/.gemini/<prefix>-GEMINI.md`, creates a managed `~/.gemini/GEMINI.md` index when no manual index exists, and registers the cron jobs. Custom commands and MCP-based hooks are not yet converted — contributions welcome.
+>>>>>>> Stashed changes
 
 ## What it does
 
+<<<<<<< Updated upstream
 1. Copies `CLAUDE.md` to `~/.gemini/<prefix>-GEMINI.md` (the Gemini CLI SSOT for this vault).
+=======
+1. Copies `CLAUDE.md` to `~/.gemini/<prefix>-GEMINI.md` (a vault-specific SSOT).
+>>>>>>> Stashed changes
 2. Registers the cron jobs (agent-agnostic — same as Claude Code).
 
 ## What is NOT converted yet
@@ -13,13 +21,14 @@
 |-----------|--------|-------|
 | Slash-like custom commands | ⚠️ not converted | Gemini CLI supports custom commands via TOML in `~/.gemini/commands/`. The skills would need to be wrapped in TOML. |
 | Event hooks | ❌ no direct equivalent | Gemini CLI supports MCP-based extensions, not exactly equivalent to Claude Code's 4 hooks. Some partial continuity can be achieved via MCP servers. |
-| Auto-read of SSOT at session start | ✅ works | GEMINI.md is read automatically. |
+| Auto-read of SSOT at session start | ✅ works when the managed index is active | Gemini CLI reads `GEMINI.md`; the installer only overwrites that file if it is already managed by second-brain or absent. |
 | Cron jobs | ✅ works | OS-level, agent-agnostic. |
 
 ## Install
 
 ```bash
 ./install.sh --agent=gemini-cli
+./install.sh --agent=gemini-cli --vault-prefix work
 ```
 
 After install, drop the skill markdown files into your workflow by asking Gemini natural-language questions like "use the braindump approach on this text..." — the skill bodies in `_bootstrap/global/commands/` are markdown prompts, Gemini can follow them.
