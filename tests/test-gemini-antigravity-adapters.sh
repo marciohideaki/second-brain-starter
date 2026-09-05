@@ -46,6 +46,14 @@ if ! grep -q "$TEST_HOME/.gemini/beta-GEMINI.md" "$TEST_HOME/.gemini/GEMINI.md";
   exit 1
 fi
 
+printf 'Manual Gemini configuration\n' > "$TEST_HOME/.gemini/GEMINI.md"
+HOME="$TEST_HOME" SECOND_BRAIN_SKIP_CRON=1 bash "$TEST_SOURCE/install.sh" \
+  --agent=gemini-cli --target-vault "$GEMINI_TARGET" --vault-prefix beta >/dev/null 2>&1
+if [ "$(cat "$TEST_HOME/.gemini/GEMINI.md")" != 'Manual Gemini configuration' ]; then
+  echo "Manual Gemini index was overwritten"
+  exit 1
+fi
+
 HOME="$TEST_HOME" SECOND_BRAIN_SKIP_CRON=1 bash "$TEST_SOURCE/install.sh" \
   --agent=antigravity \
   --target-vault "$ANTIGRAVITY_TARGET" \

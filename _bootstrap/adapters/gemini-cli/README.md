@@ -1,18 +1,10 @@
 # Gemini CLI adapter
 
-<<<<<<< Updated upstream
-**Status:** beta. Installs the vault's SSOT as a managed `~/.gemini/<prefix>-GEMINI.md`, points `~/.gemini/GEMINI.md` at it, and registers the cron jobs. Custom commands and MCP-based hooks are not yet converted — contributions welcome.
-=======
 **Status:** beta. Installs the vault's SSOT as `~/.gemini/<prefix>-GEMINI.md`, creates a managed `~/.gemini/GEMINI.md` index when no manual index exists, and registers the cron jobs. Custom commands and MCP-based hooks are not yet converted — contributions welcome.
->>>>>>> Stashed changes
 
 ## What it does
 
-<<<<<<< Updated upstream
-1. Copies `CLAUDE.md` to `~/.gemini/<prefix>-GEMINI.md` (the Gemini CLI SSOT for this vault).
-=======
 1. Copies `CLAUDE.md` to `~/.gemini/<prefix>-GEMINI.md` (a vault-specific SSOT).
->>>>>>> Stashed changes
 2. Registers the cron jobs (agent-agnostic — same as Claude Code).
 
 ## What is NOT converted yet

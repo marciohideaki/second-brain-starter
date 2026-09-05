@@ -9,24 +9,12 @@
 #   _bootstrap/adapters/  → other agents      (--agent=cursor|gemini-cli|codex|antigravity)
 #
 # Usage:
-<<<<<<< Updated upstream
 #   bash install.sh
 #   bash install.sh --target-vault /path/to/vault
 #   bash install.sh --agent=claude-code
 #   bash install.sh --agent=codex
 #   bash install.sh --agents=claude-code,codex
 #   bash install.sh --vault-name "My Second Brain" --vault-prefix mybrain
-=======
-#   bash install.sh                     # default: Claude Code
-#   bash install.sh --agent=claude-code # explicit Claude Code
-#   bash install.sh --agent=cursor      # Cursor adapter (functional)
-#   bash install.sh --agent=gemini-cli  # Gemini CLI adapter (beta)
-#   bash install.sh --agent=codex       # Codex CLI adapter
-#   bash install.sh --agent=antigravity # Antigravity adapter (stub)
-#   bash install.sh --target-vault /path/to/vault
-#   bash install.sh --agents=claude-code,codex
-#   bash install.sh --vault-name "Work Brain" --vault-prefix work
->>>>>>> Stashed changes
 #
 # Idempotent: safe to run multiple times, never duplicates configuration.
 #
@@ -46,10 +34,7 @@ FORCE_SINGLE_AGENT=0
 AGENTS_EXPLICIT=0
 VAULT_NAME=""
 VAULT_PREFIX=""
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 while [ $# -gt 0 ]; do
   case "$1" in
     --agents=*)
@@ -109,16 +94,10 @@ while [ $# -gt 0 ]; do
 done
 
 TARGET_VAULT="$(mkdir -p "$TARGET_VAULT" && cd "$TARGET_VAULT" && pwd)"
-<<<<<<< Updated upstream
 TARGET_BOOTSTRAP="$TARGET_VAULT/_bootstrap"
 TARGET_COMMANDS_DIR="$TARGET_BOOTSTRAP/global/commands"
 TARGET_HOOKS_DIR="$TARGET_BOOTSTRAP/global/hooks"
 TARGET_SCRIPTS_DIR="$TARGET_BOOTSTRAP/scripts"
-=======
-TARGET_CLAUDE_DIR="$TARGET_VAULT/.claude"
-TARGET_COMMANDS_DIR="$TARGET_CLAUDE_DIR/commands"
-TARGET_SCRIPTS_DIR="$TARGET_CLAUDE_DIR/scripts"
->>>>>>> Stashed changes
 INSTALL_CONFIG_DIR="$TARGET_VAULT/.second-brain"
 INSTALL_CONFIG="$INSTALL_CONFIG_DIR/install.env"
 
@@ -126,13 +105,10 @@ sanitize_prefix() {
   printf '%s' "$1" | tr '[:upper:] _' '[:lower:]--' | sed 's/[^a-z0-9-]//g; s/--*/-/g; s/^-//; s/-$//'
 }
 
-<<<<<<< Updated upstream
 quote_config_value() {
   printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
 }
 
-=======
->>>>>>> Stashed changes
 read_install_config() {
   [ -f "$INSTALL_CONFIG" ] || return 0
   while IFS='=' read -r key value; do
@@ -150,7 +126,6 @@ read_install_config() {
   done < "$INSTALL_CONFIG"
 }
 
-<<<<<<< Updated upstream
 copy_if_missing() {
   local src="$1"
   local dest="$2"
@@ -219,21 +194,13 @@ materialize_target_runtime() {
   copy_if_missing "$SOURCE_ROOT/_decisions/_example.md" "$TARGET_VAULT/_decisions/_example.md"
   copy_if_missing "$SOURCE_ROOT/_learnings/_example.md" "$TARGET_VAULT/_learnings/_example.md"
   copy_if_missing "$SOURCE_ROOT/_pipeline/_example.md" "$TARGET_VAULT/_pipeline/_example.md"
-=======
-quote_config_value() {
-  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
->>>>>>> Stashed changes
 }
 
 if [ -f "$INSTALL_CONFIG" ]; then
   read_install_config
   [ -n "$VAULT_NAME" ] || VAULT_NAME="${SECOND_BRAIN_VAULT_NAME:-}"
   [ -n "$VAULT_PREFIX" ] || VAULT_PREFIX="${SECOND_BRAIN_VAULT_PREFIX:-}"
-<<<<<<< Updated upstream
   if [ "$FORCE_SINGLE_AGENT" -eq 0 ] && [ "$AGENTS_EXPLICIT" -eq 0 ] && { [ ! -t 0 ] || [ ! -t 1 ]; }; then
-=======
-  if [ "$FORCE_SINGLE_AGENT" -eq 0 ] && { [ ! -t 0 ] || [ ! -t 1 ]; }; then
->>>>>>> Stashed changes
     [ -n "$AGENTS" ] || AGENTS="${SECOND_BRAIN_AGENTS:-}"
   fi
 fi
@@ -241,73 +208,17 @@ fi
 [ -n "$VAULT_NAME" ] || VAULT_NAME="$(basename "$TARGET_VAULT")"
 [ -n "$VAULT_PREFIX" ] || VAULT_PREFIX="$(sanitize_prefix "$VAULT_NAME")"
 [ -n "$VAULT_PREFIX" ] || VAULT_PREFIX="second-brain"
-<<<<<<< Updated upstream
 if [ "$FORCE_SINGLE_AGENT" -eq 1 ] && [ "$AGENTS_EXPLICIT" -eq 0 ]; then
   AGENTS="$AGENT"
 else
   [ -n "$AGENTS" ] || AGENTS="${SECOND_BRAIN_AGENTS:-$AGENT}"
 fi
 
-=======
-
-available_agents() {
-  printf '%s\n' "claude-code"
-  for d in "$BOOTSTRAP"/adapters/*/; do
-    [ -d "$d" ] && basename "$d"
-  done | sort
-}
-
-if [ "$AGENTS_EXPLICIT" -eq 0 ] && [ "$AGENT" = "claude-code" ] && [ -t 0 ] && [ -t 1 ]; then
-  default_agents="${AGENTS:-${SECOND_BRAIN_AGENTS:-$AGENT}}"
-
-  echo "Vault name [$VAULT_NAME]: "
-  read -r input_name
-  [ -n "$input_name" ] && VAULT_NAME="$input_name"
-
-  echo "Vault prefix [$VAULT_PREFIX]: "
-  read -r input_prefix
-  [ -n "$input_prefix" ] && VAULT_PREFIX="$(sanitize_prefix "$input_prefix")"
-
-  echo "Available agents:"
-  i=1
-  choices=""
-  for a in $(available_agents); do
-    printf '  %s) %s\n' "$i" "$a"
-    choices="$choices $a"
-    i=$((i + 1))
-  done
-  echo "Select agents by comma-separated number or ENTER for [$default_agents]: "
-  read -r selected
-  if [ -n "$selected" ]; then
-    AGENTS_EXPLICIT=1
-    AGENTS=""
-    OLD_IFS="$IFS"
-    IFS=','
-    for n in $selected; do
-      idx=1
-      for a in $choices; do
-        if [ "$idx" = "$(printf '%s' "$n" | tr -d ' ')" ]; then
-          AGENTS="${AGENTS:+$AGENTS,}$a"
-        fi
-        idx=$((idx + 1))
-      done
-    done
-    IFS="$OLD_IFS"
-  else
-    AGENTS="$default_agents"
-  fi
-fi
-
-[ -n "$AGENTS" ] || AGENTS="${SECOND_BRAIN_AGENTS:-$AGENT}"
-
->>>>>>> Stashed changes
 OLD_IFS="$IFS"
 IFS=','
 for selected_agent in $AGENTS; do
   if [ "$selected_agent" != "claude-code" ] && [ ! -f "$BOOTSTRAP/adapters/$selected_agent/install.sh" ]; then
     echo "Unknown agent: $selected_agent"
-<<<<<<< Updated upstream
-=======
     echo "Available adapters:"
     for d in "$BOOTSTRAP"/adapters/*/; do
       [ -d "$d" ] && echo "  - $(basename "$d")"
@@ -316,57 +227,6 @@ for selected_agent in $AGENTS; do
     IFS="$OLD_IFS"
     exit 1
   fi
-done
-IFS="$OLD_IFS"
-
-mkdir -p "$INSTALL_CONFIG_DIR"
-if [ -n "${SECOND_BRAIN_PARENT_AGENTS:-}" ]; then
-  CONFIG_AGENTS="$SECOND_BRAIN_PARENT_AGENTS"
-elif [ "$FORCE_SINGLE_AGENT" -eq 1 ] && [ "$AGENTS_EXPLICIT" -eq 0 ] && [ -n "${SECOND_BRAIN_AGENTS:-}" ]; then
-  CONFIG_AGENTS="$SECOND_BRAIN_AGENTS"
-else
-  CONFIG_AGENTS="$AGENTS"
-fi
-cat > "$INSTALL_CONFIG" <<EOF
-SECOND_BRAIN_VAULT_NAME="$(quote_config_value "$VAULT_NAME")"
-SECOND_BRAIN_VAULT_PREFIX="$(quote_config_value "$VAULT_PREFIX")"
-SECOND_BRAIN_AGENTS="$(quote_config_value "$CONFIG_AGENTS")"
-EOF
-
-COMMAND_PREFIX="${VAULT_PREFIX}-"
-
-materialize_target_runtime() {
-  mkdir -p "$TARGET_COMMANDS_DIR" "$TARGET_SCRIPTS_DIR" "$TARGET_VAULT/.logs" "$TARGET_VAULT/_memory"
-
-  for src in "$BOOTSTRAP/global/commands/"*.md; do
-    [ -f "$src" ] || continue
-    cp "$src" "$TARGET_COMMANDS_DIR/$(basename "$src")"
-  done
-
-  for src in "$BOOTSTRAP/scripts/"*.sh "$BOOTSTRAP/global/hooks/"*.sh; do
-    [ -f "$src" ] || continue
-    dest="$TARGET_SCRIPTS_DIR/$(basename "$src")"
-    cp "$src" "$dest"
-    sed -i "s|^VAULT=.*|VAULT=\"$TARGET_VAULT\"|" "$dest"
-    chmod +x "$dest"
-  done
-}
-
-# --- Delegate to adapter if not Claude Code ---
-if [ "$AGENT" != "claude-code" ]; then
-  ADAPTER_SCRIPT="$BOOTSTRAP/adapters/$AGENT/install.sh"
-  if [ ! -f "$ADAPTER_SCRIPT" ]; then
-    echo "Unknown agent: $AGENT"
->>>>>>> Stashed changes
-    echo "Available adapters:"
-    for d in "$BOOTSTRAP"/adapters/*/; do
-      [ -d "$d" ] && echo "  - $(basename "$d")"
-    done
-    echo "  - claude-code (default)"
-    IFS="$OLD_IFS"
-    exit 1
-  fi
-<<<<<<< Updated upstream
 done
 IFS="$OLD_IFS"
 
@@ -385,10 +245,6 @@ SECOND_BRAIN_AGENTS="$(quote_config_value "$CONFIG_AGENTS")"
 EOF
 
 materialize_target_runtime
-=======
-  exec bash "$ADAPTER_SCRIPT" "$SOURCE_ROOT" "$TARGET_VAULT" "$VAULT_NAME" "$VAULT_PREFIX"
-fi
->>>>>>> Stashed changes
 
 if [ "$FORCE_SINGLE_AGENT" -eq 0 ] && [ -n "$AGENTS" ] && [ "$AGENTS" != "claude-code" ]; then
   OLD_IFS="$IFS"
@@ -398,28 +254,16 @@ if [ "$FORCE_SINGLE_AGENT" -eq 0 ] && [ -n "$AGENTS" ] && [ "$AGENTS" != "claude
     if [ "$selected_agent" = "claude-code" ]; then
       SECOND_BRAIN_PARENT_AGENTS="$AGENTS" bash "$0" --agent=claude-code --target-vault "$TARGET_VAULT" --vault-name "$VAULT_NAME" --vault-prefix "$VAULT_PREFIX"
     else
-<<<<<<< Updated upstream
       SECOND_BRAIN_PARENT_AGENTS="$AGENTS" bash "$BOOTSTRAP/adapters/$selected_agent/install.sh" "$SOURCE_ROOT" "$TARGET_VAULT" "$VAULT_NAME" "$VAULT_PREFIX"
-=======
-      ADAPTER_SCRIPT="$BOOTSTRAP/adapters/$selected_agent/install.sh"
-      if [ ! -f "$ADAPTER_SCRIPT" ]; then
-        echo "Unknown agent: $selected_agent"
-        exit 1
-      fi
-      SECOND_BRAIN_PARENT_AGENTS="$AGENTS" bash "$ADAPTER_SCRIPT" "$SOURCE_ROOT" "$TARGET_VAULT" "$VAULT_NAME" "$VAULT_PREFIX"
->>>>>>> Stashed changes
     fi
     IFS=','
   done
   IFS="$OLD_IFS"
   exit 0
-<<<<<<< Updated upstream
 fi
 
 if [ "$AGENT" != "claude-code" ]; then
   exec bash "$BOOTSTRAP/adapters/$AGENT/install.sh" "$SOURCE_ROOT" "$TARGET_VAULT" "$VAULT_NAME" "$VAULT_PREFIX"
-=======
->>>>>>> Stashed changes
 fi
 
 CLAUDE_DIR="$HOME/.claude"
@@ -435,28 +279,11 @@ echo "Prefix: $VAULT_PREFIX"
 echo "Claude: $CLAUDE_DIR"
 echo ""
 
-<<<<<<< Updated upstream
 mkdir -p "$COMMANDS_DIR"
 chmod +x "$TARGET_HOOKS_DIR/"*.sh 2>/dev/null || true
 chmod +x "$TARGET_SCRIPTS_DIR/"*.sh 2>/dev/null || true
-=======
-materialize_target_runtime
-mkdir -p "$COMMANDS_DIR"
->>>>>>> Stashed changes
 
 echo "[1/5] Skills symlinks..."
-<<<<<<< Updated upstream
-=======
-
-for link in "$COMMANDS_DIR/"*.md; do
-  [ -L "$link" ] || continue
-  target="$(readlink "$link")"
-  case "$target" in
-    "$TARGET_COMMANDS_DIR"/*) rm -f "$link" ;;
-  esac
-done
-
->>>>>>> Stashed changes
 for src in "$TARGET_COMMANDS_DIR/"*.md; do
   [ -f "$src" ] || continue
   cmd="$(basename "$src")"
@@ -473,19 +300,11 @@ if ! command -v jq &>/dev/null; then
   echo "  WARNING: jq not found."
   echo "  Configure manually: edit $SETTINGS_FILE"
   echo "  Replace {VAULT} with: $TARGET_VAULT"
-<<<<<<< Updated upstream
   echo "  Reference: $TARGET_BOOTSTRAP/global/settings.json"
 else
   cp "$SETTINGS_FILE" "${SETTINGS_FILE}.bak"
 
   HOOKS_JSON=$(sed "s|{VAULT}|$TARGET_VAULT|g" "$TARGET_BOOTSTRAP/global/settings.json" | jq '.hooks')
-=======
-  echo "  Reference: $BOOTSTRAP/global/settings.json"
-else
-  cp "$SETTINGS_FILE" "${SETTINGS_FILE}.bak"
-
-  HOOKS_JSON=$(sed "s|bash {VAULT}/_bootstrap/global/hooks/|bash $TARGET_SCRIPTS_DIR/|g; s|{VAULT}|$TARGET_VAULT|g" "$BOOTSTRAP/global/settings.json" | jq '.hooks')
->>>>>>> Stashed changes
 
   jq --argjson hooks "$HOOKS_JSON" '
     def managed_second_brain_hook:
@@ -511,11 +330,7 @@ if [ -f "$GLOBAL_CLAUDE_MD" ] && grep -q "$GLOBAL_MARKER" "$GLOBAL_CLAUDE_MD"; t
   echo "  - Block already present (skipping)"
 else
   printf '\n' >> "$GLOBAL_CLAUDE_MD"
-<<<<<<< Updated upstream
   sed "s|{VAULT}|$TARGET_VAULT|g" "$TARGET_BOOTSTRAP/global/CLAUDE.md" >> "$GLOBAL_CLAUDE_MD"
-=======
-  sed "s|{VAULT}|$TARGET_VAULT|g" "$BOOTSTRAP/global/CLAUDE.md" >> "$GLOBAL_CLAUDE_MD"
->>>>>>> Stashed changes
   echo "  ✓ Block injected"
 fi
 
@@ -525,7 +340,6 @@ echo "[4/5] Cron jobs..."
 if [ "${SECOND_BRAIN_SKIP_CRON:-}" = "1" ]; then
   echo "  - skipped (SECOND_BRAIN_SKIP_CRON=1)"
 else
-<<<<<<< Updated upstream
   CRON_CURRENT=$(crontab -l 2>/dev/null || echo "")
   CRON_UPDATED="$CRON_CURRENT"
   ADDED=0
@@ -552,38 +366,9 @@ else
 
   if [ "$ADDED" -gt 0 ]; then
     printf '%s\n' "$CRON_UPDATED" | crontab -
-=======
-
-CRON_CURRENT=$(crontab -l 2>/dev/null || echo "")
-CRON_UPDATED="$CRON_CURRENT"
-ADDED=0
-
-add_cron() {
-  local schedule="$1"
-  local script="$2"
-  local label="$3"
-  local logfile="$TARGET_VAULT/.logs/${script%.sh}.log"
-  local script_path="$TARGET_SCRIPTS_DIR/$script"
-  local line="$schedule bash $script_path >> $logfile 2>&1"
-
-  if echo "$CRON_CURRENT" | grep -q "$script_path"; then
-    echo "  - $label (already present)"
-  else
-    CRON_UPDATED="${CRON_UPDATED}"$'\n'"$line"
-    ADDED=$((ADDED + 1))
-    echo "  ✓ $label"
->>>>>>> Stashed changes
   fi
 fi
 
-<<<<<<< Updated upstream
-=======
-fi
-
-# ---------------------------------------------------------------------------
-# STEP 5 — Initialize memory
-# ---------------------------------------------------------------------------
->>>>>>> Stashed changes
 echo ""
 echo "[5/5] Memory..."
 
