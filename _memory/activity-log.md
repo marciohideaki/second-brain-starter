@@ -10,7 +10,6 @@ updated: 2026-04-21
 > Append-only. Retention: 90 days. Never edit existing entries.
 > `install.sh` appends a `setup` entry on first run.
 
-<<<<<<< Updated upstream
 ## [2026-05-07 07:00] heartbeat | score 6/10 — state 16 days, 0 projects, 0 sources, 0 wiki pages
 
 ## [2026-05-08 07:00] heartbeat | score 6/10 — state 17 days, 0 projects, 0 sources, 0 wiki pages
@@ -86,7 +85,6 @@ updated: 2026-04-21
 ## [2026-06-08 07:00] heartbeat | score 6/10 — state 48 days, 0 projects, 0 sources, 0 wiki pages
 
 ## [2026-06-08 09:00] lint | 0 critical, 0 warnings (score 10/10)
-=======
 ## [2026-04-22 07:00] heartbeat | score 10/10 — state 1 days, 0 projects, 0 sources, 0 wiki pages
 
 ## [2026-04-23 07:00] heartbeat | score 10/10 — state 2 days, 0 projects, 0 sources, 0 wiki pages
@@ -100,7 +98,6 @@ updated: 2026-04-21
 ## [2026-04-27 07:00] heartbeat | score 10/10 — state 6 days, 0 projects, 0 sources, 0 wiki pages
 
 ## [2026-04-27 09:00] lint | 0 critical, 0 warnings (score 10/10)
->>>>>>> Stashed changes
 
 ## [2026-06-09 07:00] heartbeat | score 6/10 — state 49 days, 0 projects, 0 sources, 0 wiki pages
 

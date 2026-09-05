@@ -32,13 +32,8 @@ if [ ! -f "$TEST_HOME/.cursor/rules/beta-00-second-brain.mdc" ]; then
   exit 1
 fi
 
-<<<<<<< Updated upstream
 # Skill rules exist
-count=$(find "$TEST_HOME/.cursor/rules" -maxdepth 1 -name "skill-*.mdc" | wc -l)
-=======
-# 12 skill rules exist
 count=$(find "$TEST_HOME/.cursor/rules" -maxdepth 1 -name "beta-skill-*.mdc" | wc -l)
->>>>>>> Stashed changes
 if [ "$count" -lt 12 ]; then
   echo "Expected at least 12 skill rules, got $count"
   exit 1

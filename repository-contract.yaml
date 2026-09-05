@@ -1,0 +1,7 @@
+schema_version: repository-contract/v1
+repository_id: 58edeeaf-d998-43b0-993c-8747ce26209b
+identity:
+  remotes:
+  - github.com/marciohideaki/second-brain-starter
+capabilities:
+  manifest: null

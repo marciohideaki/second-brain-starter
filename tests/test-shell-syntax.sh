@@ -5,6 +5,15 @@ set -e
 
 VAULT="$(cd "$(dirname "$0")/.." && pwd)"
 
+# Check tracked documentation too: valid shell alone cannot detect every bad merge.
+if git -C "$VAULT" grep -n -I -E '^(<<<<<<< |>>>>>>> |\|\|\|\|\|\|\| )' -- .; then
+  echo "Unresolved merge conflict markers in tracked files"
+  exit 1
+else
+  status=$?
+  [ "$status" -eq 1 ] || exit "$status"
+fi
+
 checked=0
 for f in \
   "$VAULT"/install.sh \

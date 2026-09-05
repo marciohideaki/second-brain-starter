@@ -2,11 +2,7 @@
 # Cursor adapter — installs second-brain-starter for Cursor.
 #
 # Invoked by the root install.sh with --agent=cursor.
-<<<<<<< Updated upstream
 # Reads source and target vault paths from the root script.
-=======
-# Reads source root from $1 and target vault from $2 (passed by the root script).
->>>>>>> Stashed changes
 
 set -e
 
@@ -19,13 +15,9 @@ TARGET_VAULT="$(mkdir -p "$TARGET_VAULT" && cd "$TARGET_VAULT" && pwd)"
 BOOTSTRAP="$SOURCE_ROOT/_bootstrap"
 ADAPTER="$BOOTSTRAP/adapters/cursor"
 CURSOR_RULES="$HOME/.cursor/rules"
-<<<<<<< Updated upstream
 TARGET_BOOTSTRAP="$TARGET_VAULT/_bootstrap"
 TARGET_COMMANDS_DIR="$TARGET_BOOTSTRAP/global/commands"
 TARGET_SCRIPTS_DIR="$TARGET_BOOTSTRAP/scripts"
-=======
-TARGET_SCRIPTS_DIR="$TARGET_VAULT/.claude/scripts"
->>>>>>> Stashed changes
 
 echo "=== second-brain-starter — Cursor adapter ==="
 echo "Source       : $SOURCE_ROOT"
@@ -35,11 +27,7 @@ echo "Prefix       : $VAULT_PREFIX"
 echo "Cursor rules : $CURSOR_RULES"
 echo ""
 
-<<<<<<< Updated upstream
 mkdir -p "$CURSOR_RULES" "$TARGET_VAULT/.logs"
-=======
-mkdir -p "$CURSOR_RULES" "$TARGET_VAULT/.logs" "$TARGET_SCRIPTS_DIR"
->>>>>>> Stashed changes
 
 # ---------------------------------------------------------------------------
 # STEP 1 — SSOT rule (always applied): the CLAUDE.md content
@@ -58,26 +46,11 @@ done
 SSOT_DEST="$CURSOR_RULES/${VAULT_PREFIX}-00-second-brain.mdc"
 
 # Header with frontmatter
-<<<<<<< Updated upstream
 sed "s|{VAULT}|$TARGET_VAULT|g" "$ADAPTER/templates/cursorrules-header.mdc" > "$SSOT_DEST"
+printf '\n<!-- Second Brain managed rule -->\n<!-- Vault: %s -->\n<!-- Source: %s -->\n\n' "$TARGET_VAULT" "$SOURCE_ROOT" >> "$SSOT_DEST"
 
 # Append CLAUDE.md body (strip its H1 since the header already has the title)
 awk 'NR > 1 || !/^# /' "$TARGET_VAULT/CLAUDE.md" | sed "s|{VAULT}|$TARGET_VAULT|g" >> "$SSOT_DEST"
-=======
-{
-  printf '%s\n' '<!-- Second Brain managed rule -->'
-  printf '<!-- Vault: %s -->\n' "$TARGET_VAULT"
-  printf '<!-- Source: %s -->\n\n' "$SOURCE_ROOT"
-  sed "s|{VAULT}|$TARGET_VAULT|g" "$ADAPTER/templates/cursorrules-header.mdc"
-} > "$SSOT_DEST"
-
-# Append CLAUDE.md body (strip its H1 since the header already has the title)
-if [ -f "$TARGET_VAULT/CLAUDE.md" ]; then
-  awk 'NR > 1 || !/^# /' "$TARGET_VAULT/CLAUDE.md" | sed "s|{VAULT}|$TARGET_VAULT|g" >> "$SSOT_DEST"
-else
-  awk 'NR > 1 || !/^# /' "$SOURCE_ROOT/CLAUDE.md" | sed "s|{VAULT}|$TARGET_VAULT|g" >> "$SSOT_DEST"
-fi
->>>>>>> Stashed changes
 
 echo "  ✓ $SSOT_DEST"
 
@@ -169,13 +142,8 @@ echo ""
 echo "=== Cursor adapter installed ==="
 echo ""
 echo "Rules installed at: $CURSOR_RULES"
-<<<<<<< Updated upstream
 echo "  - 00-second-brain.mdc       (SSOT, always active)"
 echo "  - skill-<name>.mdc          (skills, loaded on demand)"
-=======
-echo "  - ${VAULT_PREFIX}-00-second-brain.mdc       (SSOT, always active)"
-echo "  - ${VAULT_PREFIX}-skill-<name>.mdc          (12 skills, loaded on demand)"
->>>>>>> Stashed changes
 echo ""
 echo "How to invoke a skill:"
 echo "  Open Cursor, then type in the chat:"

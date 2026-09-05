@@ -12,32 +12,21 @@ SOURCE_ROOT="$(cd "$SOURCE_ROOT" && pwd)"
 TARGET_VAULT="$(mkdir -p "$TARGET_VAULT" && cd "$TARGET_VAULT" && pwd)"
 BOOTSTRAP="$SOURCE_ROOT/_bootstrap"
 ADAPTER="$BOOTSTRAP/adapters/antigravity"
-<<<<<<< Updated upstream
 TARGET_SCRIPTS_DIR="$TARGET_VAULT/_bootstrap/scripts"
 
 echo "=== second-brain-starter — Antigravity adapter ==="
-=======
-TARGET_SCRIPTS_DIR="$TARGET_VAULT/.claude/scripts"
-
-echo "=== second-brain-starter — Antigravity adapter (stub) ==="
->>>>>>> Stashed changes
 echo "Source: $SOURCE_ROOT"
 echo "Vault : $TARGET_VAULT"
 echo "Name  : $VAULT_NAME"
 echo "Prefix: $VAULT_PREFIX"
 echo ""
 
-<<<<<<< Updated upstream
 mkdir -p "$TARGET_VAULT/.logs"
-=======
-mkdir -p "$TARGET_VAULT/.logs" "$TARGET_SCRIPTS_DIR"
->>>>>>> Stashed changes
 
 echo "[1/2] SSOT: AGENTS.md..."
 
 DEST="$TARGET_VAULT/AGENTS.md"
 
-<<<<<<< Updated upstream
 if [ -f "$DEST" ]; then
   echo "  - $DEST already exists (kept)"
 else
@@ -45,57 +34,10 @@ else
   printf '\n\n<!-- Vault: %s -->\n\n' "$TARGET_VAULT" >> "$DEST"
   if [ -f "$TARGET_VAULT/CLAUDE.md" ]; then
     sed "s|{VAULT}|$TARGET_VAULT|g" "$TARGET_VAULT/CLAUDE.md" >> "$DEST"
-=======
-# If Codex adapter already created it, we overwrite (same content, same source)
-sed "s|{VAULT}|$TARGET_VAULT|g" "$ADAPTER/templates/agents.md" > "$DEST"
-printf '\n' >> "$DEST"
-if [ -f "$TARGET_VAULT/CLAUDE.md" ]; then
-  sed "s|{VAULT}|$TARGET_VAULT|g" "$TARGET_VAULT/CLAUDE.md" >> "$DEST"
-else
-  sed "s|{VAULT}|$TARGET_VAULT|g" "$SOURCE_ROOT/CLAUDE.md" >> "$DEST"
-fi
-
-echo "  ✓ $DEST"
-
-# ---------------------------------------------------------------------------
-# STEP 2 — Cron jobs
-# ---------------------------------------------------------------------------
-echo ""
-echo "[2/2] Cron jobs..."
-
-if [ "${SECOND_BRAIN_SKIP_CRON:-}" = "1" ]; then
-  echo "  - skipped (SECOND_BRAIN_SKIP_CRON=1)"
-  ADDED=0
-else
-
-for src in "$BOOTSTRAP/scripts/"*.sh; do
-  [ -f "$src" ] || continue
-  dest="$TARGET_SCRIPTS_DIR/$(basename "$src")"
-  cp "$src" "$dest"
-  sed -i "s|^VAULT=.*|VAULT=\"$TARGET_VAULT\"|" "$dest"
-  chmod +x "$dest"
-done
-
-CRON_CURRENT=$(crontab -l 2>/dev/null || echo "")
-CRON_UPDATED="$CRON_CURRENT"
-ADDED=0
-
-add_cron() {
-  local schedule="$1"
-  local script="$2"
-  local label="$3"
-  local logfile="$TARGET_VAULT/.logs/${script%.sh}.log"
-  local script_path="$TARGET_SCRIPTS_DIR/$script"
-  local line="$schedule bash $script_path >> $logfile 2>&1"
-  if echo "$CRON_CURRENT" | grep -q "$script_path"; then
-    echo "  - $label (already present)"
->>>>>>> Stashed changes
   else
     sed "s|{VAULT}|$TARGET_VAULT|g" "$SOURCE_ROOT/CLAUDE.md" >> "$DEST"
   fi
   echo "  ✓ $DEST"
-fi
-
 fi
 
 echo ""

@@ -301,13 +301,8 @@ Primary support is **Claude Code** (the richest set of hooks + native slash-comm
 | Claude Code | **stable** (default) | `./install.sh` |
 | [Cursor](https://cursor.com) | **functional** | `./install.sh --agent=cursor` |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | **beta** (SSOT + cron only) | `./install.sh --agent=gemini-cli` |
-<<<<<<< Updated upstream
 | [Codex CLI](https://github.com/openai/codex) | **functional** (skills + AGENTS.md + cron, no hooks) | `./install.sh --agent=codex` |
 | Antigravity | **lightweight** (AGENTS.md + cron) | `./install.sh --agent=antigravity` |
-=======
-| [Codex CLI](https://github.com/openai/codex) | **functional** (AGENTS.md + global skills + cron) | `./install.sh --agent=codex` |
-| Antigravity | **stub** (community PR welcome) | `./install.sh --agent=antigravity` |
->>>>>>> Stashed changes
 
 **What you lose outside Claude Code:** the 4 event hooks (auto-detection of skipped `/end-session`, pre-compaction state snapshots, prompt logging, long-op notifications). Cron jobs and skill definitions still work in every adapter.
 
@@ -369,11 +364,7 @@ Claude forgets everything between sessions. This starter teaches Claude to read 
 
 ### "Will this work with other AI tools like Cursor, Gemini CLI, etc.?"
 
-<<<<<<< Updated upstream
 Yes, with different maturity levels. Claude Code is the primary target (all 4 hooks supported). Cursor and Codex CLI have **functional adapters** (skills/rules + cron, no hooks). Gemini CLI is beta and Antigravity is a lightweight AGENTS.md adapter. Full matrix: [docs/en/multi-agent.md](docs/en/multi-agent.md).
-=======
-Yes, with different maturity levels. Claude Code is the primary target (all 4 hooks supported). Cursor and Codex CLI have **functional adapters**; Gemini CLI is **beta**; Antigravity is still a **stub**. Full matrix: [docs/en/multi-agent.md](docs/en/multi-agent.md).
->>>>>>> Stashed changes
 
 ---
 
@@ -528,13 +519,8 @@ Suporte primário é **Claude Code** (4 hooks + slash-commands nativos). Existem
 | Claude Code | **estável** (default) | `./install.sh` |
 | [Cursor](https://cursor.com) | **funcional** | `./install.sh --agent=cursor` |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | **beta** (SSOT + cron) | `./install.sh --agent=gemini-cli` |
-<<<<<<< Updated upstream
 | [Codex CLI](https://github.com/openai/codex) | **funcional** (skills + AGENTS.md + cron, sem hooks) | `./install.sh --agent=codex` |
 | Antigravity | **leve** (AGENTS.md + cron) | `./install.sh --agent=antigravity` |
-=======
-| [Codex CLI](https://github.com/openai/codex) | **funcional** (AGENTS.md + skills globais + cron) | `./install.sh --agent=codex` |
-| Antigravity | **stub** (PR welcome) | `./install.sh --agent=antigravity` |
->>>>>>> Stashed changes
 
 Fora do Claude Code você perde os 4 hooks de evento. Crons e skills continuam funcionando.
 
